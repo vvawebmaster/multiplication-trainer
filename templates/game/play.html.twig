@@ -109,10 +109,26 @@
             </button>
         </div>
 
-        {# ===== FEEDBACK POPUP ===== #}
+        {# ===== CORRECT FEEDBACK (brief) ===== #}
         <div class="game-feedback hidden" data-game-target="feedback">
             <span class="game-feedback__emoji" data-game-target="feedbackEmoji"></span>
             <p class="game-feedback__text" data-game-target="feedbackText"></p>
+        </div>
+
+        {# ===== WRONG ANSWER OVERLAY (stays until click) ===== #}
+        <div class="wrong-overlay hidden" data-game-target="wrongOverlay">
+            <div class="wrong-overlay__card">
+                <span class="wrong-overlay__emoji">😢</span>
+                <p class="wrong-overlay__your-answer">Твоя відповідь: <strong data-game-target="wrongYourAnswer"></strong></p>
+                <div class="wrong-overlay__correct">
+                    <span class="wrong-overlay__label">Правильна відповідь:</span>
+                    <span class="wrong-overlay__answer" data-game-target="wrongCorrectAnswer"></span>
+                </div>
+                <p class="wrong-overlay__expression" data-game-target="wrongExpression"></p>
+                <button class="btn btn--primary btn--large wrong-overlay__btn" data-action="game#dismissWrong">
+                    Зрозуміло, далі →
+                </button>
+            </div>
         </div>
 
         {# ===== SESSION COMPLETE ===== #}

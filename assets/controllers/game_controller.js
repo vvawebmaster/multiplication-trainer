@@ -17,6 +17,7 @@ export default class extends Controller {
         'modeLabel', 'mapHint', 'completeTitle',
         'testInput', 'answerField', 'correctDisplay',
         'stageTitle', 'stageSubtitle',
+        'wrongOverlay', 'wrongYourAnswer', 'wrongCorrectAnswer', 'wrongExpression',
     ]
 
     static values = {
@@ -179,6 +180,8 @@ export default class extends Controller {
         if (isCorrect) {
             btn.classList.add('choice-btn--correct')
             earned = this.onCorrect()
+            this.trackProgress(q, isCorrect, earned)
+            setTimeout(() => this.showNextQuestion(), 1200)
         } else {
             btn.classList.add('choice-btn--wrong')
             btn.classList.add('animate-shake')
@@ -190,10 +193,9 @@ export default class extends Controller {
                 }
             })
             this.onWrong()
+            this.trackProgress(q, isCorrect, 0)
+            this.showWrongOverlay(q, String(selectedAnswer))
         }
-
-        this.trackProgress(q, isCorrect, earned)
-        setTimeout(() => this.showNextQuestion(), isCorrect ? 1200 : 2500)
     }
 
     // ==================== ANSWER: TYPED (TEST) ====================
@@ -223,11 +225,9 @@ export default class extends Controller {
         } else {
             this.answerFieldTarget.classList.add('test-input__field--wrong')
             this.answerFieldTarget.classList.add('animate-shake')
-            this.correctDisplayTarget.textContent = `Правильна відповідь: ${q.correctAnswer}`
-            this.correctDisplayTarget.classList.remove('hidden')
             this.onWrong()
             this.trackProgress(q, isCorrect, 0)
-            setTimeout(() => this.showNextQuestion(), 3000)
+            this.showWrongOverlay(q, value)
         }
     }
 
@@ -290,14 +290,14 @@ export default class extends Controller {
     }
 
     showFeedback(correct) {
-        const messages = correct ? CORRECT_MESSAGES : WRONG_MESSAGES
-        const msg = messages[Math.floor(Math.random() * messages.length)]
+        if (!correct) return // Wrong answers use the overlay instead
 
-        this.feedbackEmojiTarget.textContent = correct ? '✅' : '😢'
+        const msg = CORRECT_MESSAGES[Math.floor(Math.random() * CORRECT_MESSAGES.length)]
+
+        this.feedbackEmojiTarget.textContent = '✅'
         this.feedbackTextTarget.textContent = msg
-        this.feedbackTarget.classList.remove('hidden', 'game-feedback--hint')
-        this.feedbackTarget.classList.add(correct ? 'game-feedback--correct' : 'game-feedback--wrong')
-        this.feedbackTarget.classList.remove(correct ? 'game-feedback--wrong' : 'game-feedback--correct')
+        this.feedbackTarget.classList.remove('hidden', 'game-feedback--hint', 'game-feedback--wrong')
+        this.feedbackTarget.classList.add('game-feedback--correct')
 
         setTimeout(() => this.feedbackTarget.classList.add('hidden'), 1500)
     }
@@ -306,6 +306,24 @@ export default class extends Controller {
         this.hintUsed = true
         this.hintTarget.classList.remove('hidden')
         this.hintBtnTarget.classList.add('hidden')
+    }
+
+    showWrongOverlay(question, yourAnswer) {
+        // Build the full expression with answer
+        const text = question.text.replace('?', String(question.correctAnswer))
+
+        this.wrongYourAnswerTarget.textContent = yourAnswer
+        this.wrongCorrectAnswerTarget.textContent = question.correctAnswer
+        this.wrongExpressionTarget.textContent = text
+        this.wrongOverlayTarget.classList.remove('hidden')
+
+        // Hide the brief feedback popup if visible
+        this.feedbackTarget.classList.add('hidden')
+    }
+
+    dismissWrong() {
+        this.wrongOverlayTarget.classList.add('hidden')
+        this.showNextQuestion()
     }
 
     // ==================== SESSION COMPLETE ====================

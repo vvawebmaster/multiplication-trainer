@@ -666,10 +666,10 @@ body {
     animation: slideIn 0.3s ease;
 }
 
-/* ---- Feedback ---- */
+/* ---- Correct Feedback (brief popup) ---- */
 .game-feedback {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -679,31 +679,112 @@ body {
 }
 
 .game-feedback__emoji {
-    font-size: 5rem;
+    font-size: 6rem;
     display: block;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
 }
 
 .game-feedback__text {
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 800;
     color: white;
-    backdrop-filter: blur(5px);
-    padding: 8px 24px;
+    padding: 12px 32px;
     border-radius: 50px;
-    margin-top: 8px;
+    margin-top: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .game-feedback--correct .game-feedback__text {
-    background: rgba(0, 184, 148, 0.85);
-}
-
-.game-feedback--wrong .game-feedback__text {
-    background: rgba(225, 112, 85, 0.85);
+    background: #00b894;
 }
 
 .game-feedback--hint .game-feedback__text {
-    background: rgba(253, 203, 110, 0.85);
+    background: #fdcb6e;
     color: #2d3436;
+}
+
+/* ---- Wrong Answer Overlay (stays until click) ---- */
+.wrong-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(225, 112, 85, 0.15);
+    backdrop-filter: blur(4px);
+    z-index: 160;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.wrong-overlay__card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(225, 112, 85, 0.3);
+    max-width: 400px;
+    width: 90%;
+    animation: feedbackPop 0.4s ease;
+}
+
+.wrong-overlay__emoji {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.wrong-overlay__your-answer {
+    font-size: 1.1rem;
+    color: var(--color-text-light);
+    margin-bottom: 16px;
+}
+
+.wrong-overlay__your-answer strong {
+    color: var(--color-danger);
+    text-decoration: line-through;
+    font-size: 1.3rem;
+}
+
+.wrong-overlay__correct {
+    background: linear-gradient(135deg, #00b894, #00cec9);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-bottom: 12px;
+}
+
+.wrong-overlay__label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.wrong-overlay__answer {
+    display: block;
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.wrong-overlay__expression {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 24px;
+}
+
+.wrong-overlay__btn {
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ---- Level Stats ---- */
