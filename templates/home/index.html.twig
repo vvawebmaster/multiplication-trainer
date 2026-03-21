@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Матемагія — Математичні ігри{% endblock %}
+
+{% block body %}
+    <div class="hero">
+        <h1 class="hero__title">Привіт, математику! 🌟</h1>
+        <p class="hero__subtitle">Обери гру та почни тренуватись!</p>
+    </div>
+
+    {% for category, games in categories %}
+        <section class="category">
+            <h2 class="category__title">{{ category }}</h2>
+            <div class="game-cards">
+                {% for game in games %}
+                    <a href="{{ path('app_game_play', {slug: game.slug}) }}" class="game-card">
+                        <span class="game-card__icon">{{ game.icon }}</span>
+                        <h3 class="game-card__name">{{ game.name }}</h3>
+                        <p class="game-card__desc">{{ game.description }}</p>
+                        <span class="game-card__btn">Грати!</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </section>
+    {% endfor %}
+{% endblock %}

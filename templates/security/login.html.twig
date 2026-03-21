@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Вхід — Матемагія{% endblock %}
+
+{% block body %}
+    <div class="login-page">
+        <div class="login-card">
+            <span class="login-card__icon">🧮</span>
+            <h1 class="login-card__title">Матемагія</h1>
+            <p class="login-card__subtitle">Як тебе звати?</p>
+
+            {% if error %}
+                <div class="login-card__error">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <form method="post" class="login-form">
+                <input
+                    type="text"
+                    name="_username"
+                    class="login-form__input"
+                    placeholder="Наприклад, Оленка..."
+                    value="{{ last_username }}"
+                    required
+                    autofocus
+                    autocomplete="off"
+                    maxlength="30"
+                >
+                <button type="submit" class="btn btn--primary btn--large login-form__btn">
+                    Увійти 🚀
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

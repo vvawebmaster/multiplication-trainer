@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ game.name }} — Матемагія{% endblock %}
+
+{% block body %}
+    <div class="game-area"
+         data-controller="game"
+         data-game-slug-value="{{ game.slug }}"
+         data-game-progress-url-value="{{ path('app_game_progress_load', {slug: game.slug}) }}"
+    >
+        <canvas class="celebration-canvas" data-game-target="celebrationCanvas"></canvas>
+
+        {# ===== TOP BAR ===== #}
+        <div class="game-topbar">
+            <a href="{{ path('app_home') }}" class="game-topbar__back">← Назад</a>
+            <div class="game-topbar__stats">
+                <span class="stat stat--score">⭐ <span data-game-target="score">0</span></span>
+                <span class="stat stat--streak">🔥 <span data-game-target="streak">0</span></span>
+                <span class="stat stat--level" data-game-target="levelBadge">📊 Рівень <span data-game-target="level">1</span></span>
+            </div>
+        </div>
+
+        {# ===== START SCREEN ===== #}
+        <div class="game-screen game-screen--start" data-game-target="startScreen">
+            <span class="game-screen__icon">{{ game.icon }}</span>
+            <h1>{{ game.name }}</h1>
+            <p>Множення та ділення від 1 до 10</p>
+
+            <div class="progress-overview">
+                <div class="progress-ring">
+                    <span class="progress-ring__value" data-game-target="progressPercent">0</span>
+                    <span class="progress-ring__label">% вивчено</span>
+                </div>
+            </div>
+
+            <div class="start-buttons">
+                <button class="btn btn--primary btn--large" data-action="game#startSession">
+                    Почати сесію 🚀
+                </button>
+            </div>
+
+            <div class="session-info">
+                <p>Кожна сесія:</p>
+                <div class="session-stages">
+                    <span class="session-stage">📚 Вивчення (вибір відповіді)</span>
+                    <span class="session-stage-arrow">→</span>
+                    <span class="session-stage">📝 Тест (напиши сам)</span>
+                </div>
+            </div>
+
+            <div class="knowledge-section">
+                <h3 class="knowledge-section__title">Твоя карта знань</h3>
+                <p class="knowledge-section__hint" data-game-target="mapHint"></p>
+                <div class="knowledge-map" data-game-target="knowledgeMap"></div>
+                <div class="knowledge-legend">
+                    <span class="legend-item"><span class="legend-dot legend-dot--mastered"></span> Знаю!</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--good"></span> Майже</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--weak"></span> Вчу</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--stale"></span> Підзабув</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--rusty"></span> Забув</span>
+                    <span class="legend-item"><span class="legend-dot legend-dot--unseen"></span> Ще не було</span>
+                </div>
+            </div>
+        </div>
+
+        {# ===== QUESTION SCREEN ===== #}
+        <div class="game-screen game-screen--question hidden" data-game-target="questionScreen">
+            <div class="question">
+                <div class="question__mode" data-game-target="modeLabel"></div>
+                <div class="question__progress">
+                    <div class="question__progress-bar" data-game-target="progressBar"></div>
+                </div>
+                <h2 class="question__text" data-game-target="questionText"></h2>
+
+                {# Multiple choice (learn stage) #}
+                <div class="choices" data-game-target="choices"></div>
+
+                {# Typed answer (test stage) #}
+                <div class="test-input hidden" data-game-target="testInput">
+                    <input
+                        type="number"
+                        class="test-input__field"
+                        data-game-target="answerField"
+                        data-action="keydown->game#onAnswerKey"
+                        placeholder="?"
+                        autocomplete="off"
+                        inputmode="numeric"
+                    >
+                    <button class="btn btn--primary test-input__submit" data-action="game#submitAnswer">
+                        Відповісти ➜
+                    </button>
+                    <div class="test-input__correct hidden" data-game-target="correctDisplay"></div>
+                </div>
+
+                <button class="btn btn--hint" data-action="game#showHint" data-game-target="hintBtn">
+                    💡 Підказка
+                </button>
+                <p class="hint hidden" data-game-target="hint"></p>
+            </div>
+        </div>
+
+        {# ===== STAGE TRANSITION (learn → test) ===== #}
+        <div class="game-screen game-screen--transition hidden" data-game-target="stageTransition">
+            <span class="game-screen__icon">🎯</span>
+            <h2 data-game-target="stageTitle">Час перевірки!</h2>
+            <p data-game-target="stageSubtitle">Тепер напиши відповіді сам — без варіантів!</p>
+            <button class="btn btn--primary btn--large" data-action="game#continueToTest">
+                Готовий! 💪
+            </button>
+        </div>
+
+        {# ===== FEEDBACK POPUP ===== #}
+        <div class="game-feedback hidden" data-game-target="feedback">
+            <span class="game-feedback__emoji" data-game-target="feedbackEmoji"></span>
+            <p class="game-feedback__text" data-game-target="feedbackText"></p>
+        </div>
+
+        {# ===== SESSION COMPLETE ===== #}
+        <div class="game-screen game-screen--complete hidden" data-game-target="completeScreen">
+            <span class="game-screen__icon">🏆</span>
+            <h2 data-game-target="completeTitle">Сесію завершено!</h2>
+            <div class="level-stats">
+                <p>Правильних: <strong data-game-target="levelCorrect">0</strong> / <strong data-game-target="levelTotal">0</strong></p>
+                <p>Найкращий стрік: <strong data-game-target="levelStreak">0</strong> 🔥</p>
+            </div>
+
+            <div class="knowledge-section knowledge-section--compact">
+                <h3 class="knowledge-section__title">Оновлена карта знань</h3>
+                <div class="knowledge-map" data-game-target="knowledgeMap"></div>
+            </div>
+
+            <div class="complete-buttons">
+                <button class="btn btn--primary btn--large" data-action="game#nextLevel">
+                    Наступний рівень! 🚀
+                </button>
+                <button class="btn btn--secondary" data-action="game#backToMenu">
+                    На головну
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
