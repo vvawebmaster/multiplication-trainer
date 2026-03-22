@@ -293,10 +293,12 @@ export class Session {
         return this.queue.length + this.retryQueue.length
     }
 
-    /** Progress 0-100 for current stage. Based on cleanly completed / base count. */
+    /** Progress 0-100 for current stage. Only reaches 100% when all questions (including retries) are done. */
     get progress() {
-        if (this.stageBaseCount === 0) return 0
-        return Math.min(100, Math.round((this.stageCompleted / this.stageBaseCount) * 100))
+        const remaining = this.queue.length + this.retryQueue.length
+        const total = this.stageCompleted + remaining
+        if (total === 0) return 100
+        return Math.round((this.stageCompleted / total) * 100)
     }
 
     /**
