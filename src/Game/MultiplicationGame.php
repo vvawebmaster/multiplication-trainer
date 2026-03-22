@@ -21,7 +21,7 @@ final class MultiplicationGame implements GameInterface
 
     public function getIcon(): string
     {
-        return '✖️';
+        return '🔢';
     }
 
     public function getCategory(): string

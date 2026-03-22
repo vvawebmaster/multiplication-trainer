@@ -124,6 +124,13 @@ class GameController extends AbstractController
             $user->updateBestStreak($currentStreak);
             $user->updateLevel($newLevel);
             $user->incrementSessionsCompleted();
+
+            // Save last session results
+            $lastSessionData = $data['lastSessionData'] ?? null;
+            if (is_array($lastSessionData)) {
+                $user->setLastSessionData($lastSessionData);
+            }
+
             $em->flush();
 
             return new JsonResponse(['stats' => $user->statsToArray()]);

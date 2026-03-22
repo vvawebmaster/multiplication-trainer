@@ -18,6 +18,7 @@
             {% if app.user %}
                 <div class="header__user">
                     <span class="header__greeting">Привіт, {{ app.user.username }}!</span>
+                    <a href="{{ path('app_stats') }}" class="header__logout">📊 Статистика</a>
                     <a href="{{ path('app_logout') }}" class="header__logout">Вийти</a>
                 </div>
             {% endif %}

@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Статистика — Матемагія{% endblock %}
+
+{% block body %}
+    <div class="stats-page">
+        {# ===== HEADER STATS ===== #}
+        <div class="stats-cards">
+            <div class="stats-card">
+                <span class="stats-card__icon">📊</span>
+                <span class="stats-card__value">{{ user.level }}</span>
+                <span class="stats-card__label">Рівень</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-card__icon">⭐</span>
+                <span class="stats-card__value">{{ user.totalScore }}</span>
+                <span class="stats-card__label">Бали</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-card__icon">🔥</span>
+                <span class="stats-card__value">{{ user.bestStreak }}</span>
+                <span class="stats-card__label">Найкращий стрік</span>
+            </div>
+            <div class="stats-card">
+                <span class="stats-card__icon">🎯</span>
+                <span class="stats-card__value">{{ user.sessionsCompleted }}</span>
+                <span class="stats-card__label">Сесій</span>
+            </div>
+        </div>
+
+        {# ===== LAST SESSION ===== #}
+        {% if lastSession %}
+            <div class="stats-section">
+                <h2 class="stats-section__title">Остання сесія</h2>
+                <div class="last-session">
+                    <div class="last-session__header">
+                        <span>Таблиця на {{ lastSession.multiplier }}</span>
+                        <span class="last-session__date">{{ lastSession.date }}</span>
+                    </div>
+
+                    {% if lastSession.learned is not empty %}
+                        <div class="last-session__group last-session__group--success">
+                            <h3>✅ Вивчено ({{ lastSession.learned|length }})</h3>
+                            <div class="last-session__pairs">
+                                {% for item in lastSession.learned %}
+                                    <span class="pair-tag pair-tag--success">{{ item }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if lastSession.mistakes is not empty %}
+                        <div class="last-session__group last-session__group--danger">
+                            <h3>❌ Помилки ({{ lastSession.mistakes|length }})</h3>
+                            <div class="last-session__pairs">
+                                {% for item in lastSession.mistakes %}
+                                    <span class="pair-tag pair-tag--danger">{{ item }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="last-session__score">
+                        Заработано балів: <strong>{{ lastSession.score }}</strong>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# ===== PROGRESS BY MULTIPLIER ===== #}
+        <div class="stats-section">
+            <h2 class="stats-section__title">Прогрес по таблицях</h2>
+            <div class="multiplier-bars">
+                {% for stat in multiplierStats %}
+                    <div class="multiplier-bar">
+                        <span class="multiplier-bar__label">×{{ stat.multiplier }}</span>
+                        <div class="multiplier-bar__track">
+                            <div class="multiplier-bar__fill {% if stat.percent >= 90 %}multiplier-bar__fill--mastered{% elseif stat.percent >= 50 %}multiplier-bar__fill--good{% endif %}"
+                                 style="width: {{ stat.percent }}%"></div>
+                        </div>
+                        <span class="multiplier-bar__value">{{ stat.percent }}%</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# ===== WEAK PAIRS ===== #}
+        {% if weakPairs is not empty %}
+            <div class="stats-section">
+                <h2 class="stats-section__title">Потрібно підтягнути</h2>
+                <div class="weak-pairs-list">
+                    {% for pair in weakPairs %}
+                        <div class="weak-pair">
+                            <span class="weak-pair__name">{{ pair.pair }}</span>
+                            <div class="weak-pair__stats">
+                                <span class="weak-pair__correct">✅ {{ pair.correct }}</span>
+                                <span class="weak-pair__wrong">❌ {{ pair.wrong }}</span>
+                            </div>
+                            <div class="weak-pair__bar">
+                                <div class="weak-pair__fill" style="width: {{ pair.score }}%"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {# ===== FUN FACTS ===== #}
+        {% if totalAnswers > 0 %}
+            <div class="stats-section">
+                <h2 class="stats-section__title">Цікаві факти</h2>
+                <div class="fun-facts">
+                    <div class="fun-fact">
+                        <span class="fun-fact__emoji">🧠</span>
+                        <span>Ти відповів правильно <strong>{{ totalCorrect }}</strong> разів!</span>
+                    </div>
+                    <div class="fun-fact">
+                        <span class="fun-fact__emoji">📝</span>
+                        <span>Всього відповідей: <strong>{{ totalAnswers }}</strong></span>
+                    </div>
+                    {% if totalAnswers > 0 %}
+                        <div class="fun-fact">
+                            <span class="fun-fact__emoji">🎯</span>
+                            <span>Точність: <strong>{{ ((totalCorrect / totalAnswers) * 100)|round }}%</strong></span>
+                        </div>
+                    {% endif %}
+                    {% if hardestPair %}
+                        <div class="fun-fact">
+                            <span class="fun-fact__emoji">💪</span>
+                            <span>Найскладніша пара: <strong>{{ hardestPair }}</strong></span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="stats-actions">
+            <a href="{{ path('app_home') }}" class="btn btn--primary">← На головну</a>
+        </div>
+    </div>
+{% endblock %}

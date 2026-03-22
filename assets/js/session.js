@@ -161,8 +161,10 @@ export class Session {
         this.current = null
         this.stats = { correct: 0, wrong: 0, hinted: 0, total: 0 }
         this.lastComboKeys = []
-        this.stageBaseCount = 0  // Base questions count for current stage (for progress bar)
-        this.stageCompleted = 0  // Questions completed cleanly (correct, no hint)
+        this.stageBaseCount = 0
+        this.stageCompleted = 0
+        this.learnedSet = new Set()  // Combo keys answered correctly (no hint)
+        this.mistakeSet = new Set()  // Combo keys where mistakes were made
 
         this.buildLearnQueue()
     }
@@ -259,11 +261,18 @@ export class Session {
     recordAnswer(correct, hintUsed) {
         this.stats.total++
         const needsRetry = !correct || hintUsed
+        const key = this.current.comboKey
+        const label = this.current.text.replace(' = ?', '')
 
         if (correct && !hintUsed) {
             this.stats.correct++
             this.stageCompleted++
-        } else if (correct && hintUsed) {
+            this.learnedSet.add(label)
+        } else if (!correct) {
+            this.mistakeSet.add(label)
+        }
+
+        if (correct && hintUsed) {
             this.stats.hinted++
             // Re-add with new random variant
             const combo = this.current.operands
@@ -293,6 +302,17 @@ export class Session {
     /**
      * Get total questions for progress bar.
      */
+    /** Get session results for saving to server */
+    getResults() {
+        return {
+            multiplier: this.multiplier,
+            learned: [...this.learnedSet],
+            mistakes: [...this.mistakeSet],
+            score: this.stats.correct,
+            date: new Date().toLocaleDateString('uk-UA'),
+        }
+    }
+
     get totalForStage() {
         if (this.stage === STAGE_LEARN) return this.combos.length * 2
         return this.combos.length

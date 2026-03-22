@@ -340,7 +340,7 @@ export default class extends Controller {
         const leveledUp = newLevel > this.currentLevel
         this.currentLevel = newLevel
 
-        // Mark session as done on server
+        // Mark session as done on server + save last session results
         fetch(this.progressUrlValue, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -348,6 +348,7 @@ export default class extends Controller {
                 sessionDone: true,
                 level: this.currentLevel,
                 streak: this.bestStreak,
+                lastSessionData: this.session.getResults(),
             }),
         })
 
@@ -389,13 +390,14 @@ export default class extends Controller {
 
         const badge = this.levelBadgeTarget
         const levelSpan = this.levelTarget
-        const mul = this.currentMultiplier || ''
-        const suffix = mul ? ` (×${mul})` : ''
+        // Show multiplier only during active session
+        const inSession = this.session && !this.session.isComplete
+        const suffix = inSession && this.currentMultiplier ? ` (×${this.currentMultiplier})` : ''
 
         while (badge.firstChild) badge.removeChild(badge.firstChild)
         badge.appendChild(document.createTextNode('📊 Рівень '))
         badge.appendChild(levelSpan)
-        badge.appendChild(document.createTextNode(suffix))
+        if (suffix) badge.appendChild(document.createTextNode(suffix))
     }
 
     updateMapHint() {

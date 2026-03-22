@@ -36,6 +36,10 @@ class User implements UserInterface
     #[ORM\Column(options: ['default' => 0])]
     private int $sessionsCompleted = 0;
 
+    /** Last session results as JSON: {multiplier, learned: [...], mistakes: [...], score, date} */
+    #[ORM\Column(type: 'json', nullable: true)]
+    private ?array $lastSessionData = null;
+
     /** @var Collection<int, GameProgress> */
     #[ORM\OneToMany(targetEntity: GameProgress::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
     private Collection $progresses;
@@ -137,6 +141,17 @@ class User implements UserInterface
     public function incrementSessionsCompleted(): static
     {
         $this->sessionsCompleted++;
+        return $this;
+    }
+
+    public function getLastSessionData(): ?array
+    {
+        return $this->lastSessionData;
+    }
+
+    public function setLastSessionData(?array $data): static
+    {
+        $this->lastSessionData = $data;
         return $this;
     }
 

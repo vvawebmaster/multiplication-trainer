@@ -40,7 +40,7 @@ body {
 .header {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    padding: 16px 24px;
+    padding: 10px 24px;
     text-align: center;
 }
 
@@ -55,7 +55,7 @@ body {
 .main {
     max-width: 800px;
     margin: 0 auto;
-    padding: 24px 16px;
+    padding: 12px 16px;
 }
 
 /* ---- Hero Section ---- */
@@ -168,9 +168,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
 }
 
 .game-topbar__back {
@@ -210,34 +210,34 @@ body {
 .game-screen {
     background: var(--color-card);
     border-radius: var(--radius);
-    padding: 48px 32px;
+    padding: 24px 24px;
     text-align: center;
     box-shadow: var(--shadow-lg);
 }
 
 .game-screen__icon {
-    font-size: 4rem;
+    font-size: 2.5rem;
     display: block;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .game-screen h1,
 .game-screen h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 800;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
     color: var(--color-text);
 }
 
 .game-screen p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--color-text-light);
-    margin-bottom: 24px;
+    margin-bottom: 14px;
 }
 
 /* ---- Progress Overview ---- */
 .progress-overview {
-    margin: 20px 0 28px;
+    margin: 10px 0 14px;
 }
 
 .progress-ring {
@@ -247,36 +247,36 @@ body {
     background: linear-gradient(135deg, #667eea20, #764ba220);
     border: 3px solid var(--color-primary-light);
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     justify-content: center;
 }
 
 .progress-ring__value {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--color-primary);
     line-height: 1;
 }
 
 .progress-ring__label {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: var(--color-text-light);
     font-weight: 600;
 }
 
 /* ---- Knowledge Map ---- */
 .knowledge-section {
-    margin-top: 32px;
+    margin-top: 16px;
 }
 
 .knowledge-section--compact {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .knowledge-section__title {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--color-text);
     margin-bottom: 12px;
@@ -294,12 +294,12 @@ body {
 }
 
 .km-cell {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     font-weight: 600;
     border: 1px solid rgba(0, 0, 0, 0.05);
     transition: transform 0.15s;
@@ -372,8 +372,8 @@ body {
 .knowledge-legend {
     display: flex;
     justify-content: center;
-    gap: 16px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 8px;
     flex-wrap: wrap;
 }
 
@@ -441,8 +441,8 @@ body {
 }
 
 .btn--large {
-    padding: 18px 48px;
-    font-size: 1.3rem;
+    padding: 14px 40px;
+    font-size: 1.15rem;
 }
 
 /* ---- Test input ---- */
@@ -727,7 +727,12 @@ body {
     box-shadow: 0 12px 40px rgba(225, 112, 85, 0.3);
     max-width: 400px;
     width: 90%;
-    animation: feedbackPop 0.4s ease;
+    animation: cardAppear 0.3s ease;
+}
+
+@keyframes cardAppear {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .wrong-overlay__emoji {
@@ -854,19 +859,258 @@ body {
     animation: glow 1s ease infinite;
 }
 
+/* ---- Stats Page ---- */
+.stats-page {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.stats-card {
+    background: var(--color-card);
+    border-radius: var(--radius-sm);
+    padding: 14px 8px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.stats-card__icon {
+    font-size: 1.5rem;
+}
+
+.stats-card__value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.stats-card__label {
+    font-size: 0.7rem;
+    color: var(--color-text-light);
+    font-weight: 600;
+}
+
+.stats-section {
+    background: var(--color-card);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+}
+
+.stats-section__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 14px;
+}
+
+/* Multiplier bars */
+.multiplier-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.multiplier-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.multiplier-bar__label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 30px;
+    text-align: right;
+    color: var(--color-text);
+}
+
+.multiplier-bar__track {
+    flex: 1;
+    height: 20px;
+    background: var(--color-bg);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.multiplier-bar__fill {
+    height: 100%;
+    background: var(--color-primary-light);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    min-width: 2px;
+}
+
+.multiplier-bar__fill--good {
+    background: var(--color-secondary);
+}
+
+.multiplier-bar__fill--mastered {
+    background: var(--color-success);
+}
+
+.multiplier-bar__value {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--color-text-light);
+    width: 36px;
+}
+
+/* Last session */
+.last-session {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.last-session__header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.last-session__date {
+    color: var(--color-text-light);
+    font-weight: 400;
+    font-size: 0.85rem;
+}
+
+.last-session__group h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.last-session__pairs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pair-tag {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.pair-tag--success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.pair-tag--danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.last-session__score {
+    font-size: 0.95rem;
+    color: var(--color-text-light);
+}
+
+.last-session__score strong {
+    color: var(--color-primary);
+}
+
+/* Weak pairs */
+.weak-pairs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.weak-pair {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weak-pair__name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 50px;
+}
+
+.weak-pair__stats {
+    font-size: 0.75rem;
+    display: flex;
+    gap: 6px;
+    width: 70px;
+}
+
+.weak-pair__bar {
+    flex: 1;
+    height: 12px;
+    background: var(--color-bg);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.weak-pair__fill {
+    height: 100%;
+    background: var(--color-danger);
+    border-radius: 6px;
+}
+
+/* Fun facts */
+.fun-facts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fun-fact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+}
+
+.fun-fact__emoji {
+    font-size: 1.3rem;
+}
+
+.fun-fact strong {
+    color: var(--color-primary);
+}
+
+.stats-actions {
+    text-align: center;
+    margin: 20px 0;
+}
+
+@media (max-width: 480px) {
+    .stats-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 .animate-slide-in {
     animation: slideIn 0.3s ease forwards;
 }
 
 /* ---- Session Info ---- */
 .session-info {
-    margin: 20px 0 8px;
+    margin: 10px 0 4px;
     color: var(--color-text-light);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .session-info p {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-weight: 600;
 }
 
