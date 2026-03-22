@@ -18,8 +18,11 @@ php bin/console doctrine:migrations:migrate --no-interaction
 # Очистити кеш (потрібно після зміни конфігурації/сервісів)
 php bin/console cache:clear
 
-# Тести
+# PHP тести (unit + functional)
 php bin/phpunit
+
+# JS тести (session logic)
+node --test tests/js/session.test.mjs
 
 # Подивитися зареєстровані assets
 php bin/console debug:asset-map
