@@ -278,7 +278,7 @@ export class Session {
             const combo = this.current.operands
             const op = this.current.operation
             this.retryQueue.push(makeQuestion(combo, op))
-        } else {
+        } else if (!correct) {
             this.stats.wrong++
             // Re-add same operation for retry
             const combo = this.current.operands
