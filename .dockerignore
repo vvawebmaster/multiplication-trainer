@@ -1,0 +1,10 @@
+var/
+vendor/
+.git/
+tests/
+phpunit.dist.xml
+*.png
+*.jpg
+.env.local
+.env.*.local
+.playwright-mcp/
