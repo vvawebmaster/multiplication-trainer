@@ -24,17 +24,18 @@ COPY . .
 # Завершити composer install (з скриптами)
 RUN composer run-script post-install-cmd --no-interaction 2>/dev/null || true
 
-# Створити директорії для SQLite та кешу
+# Створити директорії для SQLite та кешу, дати повні права
 RUN mkdir -p var/data var/cache var/log \
-    && chown -R www-data:www-data var
+    && chmod -R 777 var
 
 # Продакшн env
 ENV APP_ENV=prod
-ENV APP_SECRET=change-me-in-railway
+ENV APP_SECRET=a1b2c3d4e5f6789012345678abcdef90
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
 # Кеш
 RUN php bin/console cache:warmup --env=prod || true
+RUN chmod -R 777 var
 
 # Стартовий скрипт
 COPY docker-entrypoint.sh /usr/local/bin/
