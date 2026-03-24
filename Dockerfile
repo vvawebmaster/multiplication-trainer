@@ -33,6 +33,9 @@ ENV APP_ENV=prod
 ENV APP_SECRET=a1b2c3d4e5f6789012345678abcdef90
 ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 
+# Встановити JS vendor assets (importmap)
+RUN php bin/console importmap:install --env=prod
+
 # Кеш
 RUN php bin/console cache:warmup --env=prod || true
 RUN chmod -R 777 var
