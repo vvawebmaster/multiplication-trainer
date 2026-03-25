@@ -36,6 +36,9 @@ ENV DATABASE_URL="sqlite:///%kernel.project_dir%/var/data.db"
 # Встановити JS vendor assets (importmap)
 RUN php bin/console importmap:install --env=prod
 
+# Скомпілювати assets для продакшену
+RUN php bin/console asset-map:compile --env=prod
+
 # Кеш
 RUN php bin/console cache:warmup --env=prod || true
 RUN chmod -R 777 var
